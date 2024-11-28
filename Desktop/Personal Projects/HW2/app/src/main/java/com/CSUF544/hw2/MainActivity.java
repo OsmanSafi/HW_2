@@ -1,56 +1,88 @@
 package com.CSUF544.hw2;
 
 import android.os.Bundle;
-import com.google.android.material.snackbar.Snackbar;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
-import android.view.View;
 import com.CSUF544.hw2.databinding.ActivityMainBinding;
-
-import android.view.Menu;
-import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
 
-private ActivityMainBinding binding;
+    private ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-     binding = ActivityMainBinding.inflate(getLayoutInflater());
-     setContentView(binding.getRoot());
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        setSupportActionBar(binding.toolbar);
+        // Initialize UI components
+        EditText inputNumbers = findViewById(R.id.input_numbers);
+        Button btnSort = findViewById(R.id.btn_sort);
+        Button btnClear = findViewById(R.id.btn_clear);
+        TextView tvSortedOutput = findViewById(R.id.tv_sorted_output);
+        TextView tvIntermediateSteps = findViewById(R.id.tv_intermediate_steps);
 
-        binding.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAnchorView(R.id.fab)
-                        .setAction("Action", null).show();
+        // Sort Button Logic
+        btnSort.setOnClickListener(view -> {
+            String input = inputNumbers.getText().toString().trim();
+            if (!input.isEmpty()) {
+                try {
+                    // Parse input and perform sorting
+                    String[] numStrings = input.split("\\s+");
+                    int[] numbers = new int[numStrings.length];
+                    for (int i = 0; i < numStrings.length; i++) {
+                        numbers[i] = Integer.parseInt(numStrings[i]);
+                    }
+
+                    // Perform insertion sort and collect steps
+                    StringBuilder intermediateSteps = new StringBuilder();
+                    insertionSort(numbers, intermediateSteps);
+
+                    // Update UI with results
+                    tvSortedOutput.setText("Sorted Result: " + arrayToString(numbers));
+                    tvIntermediateSteps.setText("Intermediate Steps:\n" + intermediateSteps.toString());
+                } catch (NumberFormatException e) {
+                    tvSortedOutput.setText("Invalid input. Please enter integers only.");
+                }
+            } else {
+                tvSortedOutput.setText("Input field is empty.");
             }
         });
-    }
-@Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+
+        // Clear Button Logic
+        btnClear.setOnClickListener(view -> {
+            inputNumbers.setText("");
+            tvSortedOutput.setText("");
+            tvIntermediateSteps.setText("");
+        });
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+    // Helper Method: Perform insertion sort and record intermediate steps
+    private void insertionSort(int[] arr, StringBuilder steps) {
+        for (int i = 1; i < arr.length; i++) {
+            int key = arr[i];
+            int j = i - 1;
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+            while (j >= 0 && arr[j] > key) {
+                arr[j + 1] = arr[j];
+                j--;
+            }
+            arr[j + 1] = key;
+
+            // Record the current state of the array
+            steps.append(arrayToString(arr)).append("\n");
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
+    // Helper Method: Convert array to string
+    private String arrayToString(int[] arr) {
+        StringBuilder result = new StringBuilder();
+        for (int num : arr) {
+            result.append(num).append(" ");
+        }
+        return result.toString().trim();
+    }
 }
