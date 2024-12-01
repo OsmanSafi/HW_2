@@ -61,8 +61,8 @@ public class MainActivity extends AppCompatActivity {
         btnClear.setOnClickListener(view -> {
             // Clear UI components
             inputNumbers.setText("");
-            tvSortedOutput.setText("");
-            tvIntermediateSteps.setText("");
+            tvSortedOutput.setText("Sorted Result: ");
+            tvIntermediateSteps.setText("Intermediate Steps: ");
         });
     }
 
