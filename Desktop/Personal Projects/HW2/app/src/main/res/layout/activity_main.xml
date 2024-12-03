@@ -34,7 +34,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Enter numbers separated by spaces"
+            android:importantForAutofill="no"
+            android:autofillHints=""
             android:inputType="text"
+            android:imeOptions="actionDone"
             android:maxLines="1"/>
 
         <!-- Sort Button -->
@@ -60,7 +63,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Sorted Result:"
-            android:textSize="18sp"
+            android:textSize="25sp"
             android:layout_marginTop="16dp"/>
 
         <!-- Intermediate Sorting Steps -->
@@ -68,6 +71,7 @@
             android:id="@+id/tv_intermediate_steps"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="20sp"
             android:text="Intermediate Steps:"
             android:layout_marginTop="16dp"/>
 

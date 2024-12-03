@@ -34,7 +34,22 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     // Parse input and perform sorting
                     String[] numStrings = input.split("\\s+");
+
+
+                    if(numStrings.length < 3 || numStrings.length > 8) {
+                        tvSortedOutput.setText("Input must contain 3 to 8 numbers (inclusive)");
+                        return;
+                    }
+
                     int[] nums = new int[numStrings.length];
+
+                    for (int i = 0; i < numStrings.length; i++) {
+                        nums[i] = Integer.parseInt(numStrings[i]);
+                        if(nums[i] < 0 || nums[i] > 9){
+                            tvSortedOutput.setText("Input must contain integers 0 to 9 (inclusive)");
+                            return;
+                        }
+                    }
 
                     for (int i = 0; i < numStrings.length; i++) {
                         nums[i] = Integer.parseInt(numStrings[i]);
@@ -42,12 +57,14 @@ public class MainActivity extends AppCompatActivity {
 
                     StringBuilder intermediateSteps = new StringBuilder();
 
+                    intermediateSteps.append(arrayToString(nums)).append("\n\n");
+
                     // Perform insertion sort
                     insertionSort(nums, intermediateSteps);
 
                     // Update UI with results
                     tvSortedOutput.setText("Sorted Result: " + arrayToString(nums));
-                    tvIntermediateSteps.setText("Intermediate Steps:\n" + intermediateSteps);
+                    tvIntermediateSteps.setText("Intermediate Steps:\n\n" + intermediateSteps + "\n");
 
                 } catch (NumberFormatException e) {
                     tvSortedOutput.setText("Invalid input. Please enter integers only.");
@@ -80,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
             arr[j + 1] = k;
 
             // Record the current state of the array
-            steps.append(arrayToString(arr)).append("\n");
+            steps.append(arrayToString(arr)).append("\n\n");
         }
     }
 
